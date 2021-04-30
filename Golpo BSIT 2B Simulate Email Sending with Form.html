@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,300" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+    <link rel="stylesheet" href="css/custom.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Send Email</title>
+  </head>
+  <body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s8 offset-s2">
+                <div id="content" class="m2">
+                    <header id="header" class=" pink darken-1">
+                        Send New Email
+                    </header>
+                    <form id="email-form" action="#" class="col s10 offset-s1">
+                        <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="email" type="email">
+                                    <label for="email">To:</label>
+                                </div>
+                                <div class="input-field col s12">
+                                        <input id="subject" type="text">
+                                        <label for="subject">Subject:</label>
+                                </div>
+                        </div>
+
+                            <div class="row">
+                                <div class="input-field col s12">
+                                <textarea id="message" class="materialize-textarea"></textarea>
+                                <label for="message">Mesage</label>
+                                </div>
+                            </div>
+                            <div class="row" id="loaders">
+                                <img id="spinner" src="img/spinner.gif" width="150">
+                            </div>
+                            <div class="row">
+                                    <div class="col s6">
+                                        <button id="sendBtn" class="btn waves-effect waves-light  pink darken-2" type="submit" name="action">Send
+                                                <i class="material-icons right">send</i>
+                                        </button>
+                                    </div>
+                                    <div class="col s6">
+                                        <button id="resetBtn" class="btn waves-effect waves-light light-blue darken-2" type="submit">Reset
+                                                <i class="material-icons right">delete</i>
+                                        </button>
+                                    </div>
+                            </div>
+                    </form> 
+                    
+                </div> <!--.contenido-->
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
+
+    
+      <html>
+          <body>
+              <script>
+               // Variables
+	const sendBtn = document.getElementById('sendBtn'),
+	      email = document.getElementById('email'),
+	      subject = document.getElementById('subject'),
+	      message = document.getElementById('message'),
+	      reset = document.getElementById('resetbtn'),
+	      sendEmailForm = document.getElementById('email-form');
+	
+
+	
+
+	
+
+	// Event Listeners
+	eventListeners();
+	
+
+	function eventListeners(){
+	  // App init
+	  document.addEventListener('DOMContentLoaded', appInit);
+	
+
+	  // Validate the forms
+	  email.addEventListener('blur', validateField);
+	  subject.addEventListener('blur', validateField);
+	  message.addEventListener('blur', validateField);
+	
+
+	  // send email and reset button
+	  sendEmailForm.addEventListener('submit', sendEmail);
+	  resetBtn.addEventListener('click', resetForm);
+	}
+	
+
+	
+
+	
+
+	// Functions
+	// App intitialization
+	function appInit() {
+	  // disable the send button on load
+	  sendBtn.disabled = true;
+	}
+	
+
+	function sendEmail(e) {
+	  e.preventDefault();
+	
+
+	  // show the spinner
+	  const spinner = document.querySelector('#spinner');
+	  spinner.style.display = 'block';
+	
+
+	  // show the gif image
+	  const sendEmailImg = document.createElement('img');
+	  sendEmailImg.src = 'img/mail.gif';
+	  sendEmailImg.style.display = 'block';
+	
+
+	  // hide spinner then show the send email image
+	  setTimeout(function() {
+	    // hide the spinner
+	    spinner.style.display = 'none';
+	
+
+	    // show the gif image
+	    document.querySelector('#loaders').appendChild( sendEmailImg );
+	
+
+	    // After 5 seconds, hide the image and reset the form
+	    setTimeout(function() {
+	      // hide the spinner
+	      sendEmailForm.reset();    
+	      sendEmailImg.remove();  
+	    }, 5000 );
+	
+
+	  }, 3000 );
+	}
+	
+
+	
+
+	
+
+	// Validate the form fields
+	function validateField() {
+	  let errors;
+	
+
+	  // Validate the length of the field
+	  validateLength(this);
+	
+
+	  // Validate email
+	  if(this.type === 'email') {
+	    validateEmail(this);
+	  }
+	  // Both will return errors, then check if there're any errors
+	  errors = document.querySelectorAll('.error');
+	
+
+	  // Check that the inputs are not empty
+	  if(email.value !== '' && subject.value !== '' && message.value !== '' ) {
+	    if(errors.length === 0) {
+	      // the button should be enabled
+	      sendBtn.disabled = false;
+	    }
+	  }
+	}
+	
+
+	// Validate the length of the fields
+	function validateLength(field) {
+	  if(field.value.length > 0 ) {
+	    field.style.borderBottomColor = 'green';
+	    field.classList.remove('error');
+	  } else {
+	    field.style.borderBottomColor = 'red';
+	    field.classList.add('error');
+	  }
+	}
+	
+
+	// Validate email (checks for @ in the value)
+	function validateEmail(field) {
+	  let emailText = field.value;
+	  // check if the emailText contains the @ sign
+	  if(emailText.indexOf('@') !== -1) {
+	    field.style.borderBottomColor = 'green';
+	    field.classList.remove('error');
+	  } else {
+	    field.style.borderBottomColor = 'red';
+	    field.classList.add('error');
+	  }
+	}
+	
+
+	// Reset the form
+	function resetForm() {
+	  sendEmailForm.reset();
+	}</script>
+	</body>
+	</html>

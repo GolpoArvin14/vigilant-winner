@@ -1,0 +1,136 @@
+<!DOCTYPE.html >
+<html >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Save Tweets Into Storage</title>
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="assets/css/skeleton.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+</head>
+<body>
+
+    <div id="content">
+        <div class="container">
+            <h1>Local Storage</h1>
+            <div class="row">
+                <div class="six columns">
+                    <label for="tweet">Tweet:</label>
+                    <form action="#" id="form">
+                            <label for="tweet"></label>
+                            <textarea id="tweet" class="u-full-width"></textarea>
+                            <input type="submit" class="button u-full-width button-primary" value="Save Tweet">
+                    </form>
+                </div> <!--.six-->
+                <div class="six columns">
+                    <h2>My Tweets</h2>
+                    <div id="tweet-list"></div>
+                </div> <!--.six-->
+            </div>
+        </div>
+    </div> <!--#contenido-->
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
+<script >
+const tweetList = document.getElementById('tweet-list');
+
+  eventListeners();
+
+function eventListeners(){
+   document.querySelector('#form').addEventListener('submit',newTweet);
+   
+   tweetList = addEventListener('click',removeTweet);
+   
+   document.addEventListener('DOMContentLoaded',localStorageOnLoad)
+}
+function newTweet(e){
+    e.preventDefault();
+
+    const tweet = document.getElementById('tweet').value;
+    
+    const removeBtn = document.createElement('a');
+    removeBtn.classList = 'remove-tweet';
+    removeBtn.textContent = '+';    
+    
+    const li = document.createElement('li');
+    li.textContent = tweet;    
+    
+    li.appendChild(removeBtn);
+       
+    tweetList.appendChild(li);
+    
+    addTweetLocalStorage(tweet);
+    
+    alert('Tweet Added Successfully');
+    
+    this.reset();
+}
+function removeTweet(e){
+    if(e.target.classList.contains('remove-tweet')){
+       e.target.parentElement.remove();
+    }
+    removeTweetLocalStorage(e.target.parentElement.textContent);
+}
+
+function addTweetLocalStorage(){
+     let tweets = getTweetsFormStorage();
+     
+     tweets.push(tweet);
+     
+     localStorage.setItem('tweets',JSON.stringify(tweets));
+}
+
+function getTweetsFormStorage(){
+
+     let tweets;
+     const tweetsLS= localStorage.getItem('tweets');
+     
+     if(tweetsLS === null){
+        tweets = [];
+     }
+     else {
+     tweets = JSON.parse(tweetsLS);
+     }
+     return tweets;
+}
+
+function localStorageOnLoad(){
+
+     let tweets = getTweetsFormStorage();    
+     
+     tweets.forEach(function(tweet){
+     
+     const removeBtn = document.createElement('a');
+     removeBtn.classList = 'remove-tweet';
+     removeBtn.textContent = '+';
+     
+     const li = document.createElement('li');
+     li.textContent = tweet;
+     
+     li.appendChild(removeBtn);
+     
+     tweetList.appendChild(li);
+     });
+         
+   }
+
+function removeTweetLocalStorage(tweet){
+
+       let tweets = getTweetsFormStorage();
+       
+       const tweetDelete = tweet.substring( 0, tweet.length -1);
+       
+       tweets.forEach(function(tweetLS, index){
+          if(tweetDelete ===tweetLS){
+            tweets.splice(index,1);
+          }       
+       });
+       
+       localStorage.setItem('tweets',JSON.stringify (tweets));
+}
+
+</script >
+</html>
